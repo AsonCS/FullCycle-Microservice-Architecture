@@ -1,0 +1,6 @@
+@startuml test
+!include https://github.com/plantuml-stdlib/C4-PlantUML/raw/refs/heads/master/C4_Container.puml
+
+System("System", "System Label", "System Optional Desc")
+
+@enduml
