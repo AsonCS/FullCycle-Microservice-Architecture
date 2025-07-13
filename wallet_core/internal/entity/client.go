@@ -8,7 +8,7 @@ import (
 )
 
 type Client struct {
-	ID        string
+	Id        string
 	Name      string
 	Email     string
 	Accounts  []*Account
@@ -18,7 +18,7 @@ type Client struct {
 
 func NewClient(name string, email string) (*Client, error) {
 	client := &Client{
-		ID:        uuid.New().String(),
+		Id:        uuid.New().String(),
 		Name:      name,
 		Email:     email,
 		CreatedAt: time.Now(),
@@ -56,7 +56,7 @@ func (c *Client) AddAccount(account *Account) error {
 	if account == nil {
 		return errors.New("account is required")
 	}
-	if account.Client.ID != c.ID {
+	if account.Client.Id != c.Id {
 		return errors.New("account does not belong to client")
 	}
 	c.Accounts = append(c.Accounts, account)

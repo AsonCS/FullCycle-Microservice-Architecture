@@ -3,6 +3,7 @@
         "createaccount",
         "createclient",
         "createtransaction",
-        "stretchr"
+        "stretchr",
+        "varchar"
     ]
 }

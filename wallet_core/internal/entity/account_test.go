@@ -10,7 +10,7 @@ func TestCreateAccount(t *testing.T) {
 	client, _ := NewClient("John Doe", "j@j.com")
 	account := NewAccount(client)
 	assert.NotNil(t, account)
-	assert.Equal(t, client.ID, account.Client.ID)
+	assert.Equal(t, client.Id, account.Client.Id)
 }
 
 func TestCreateAccountWithNilClient(t *testing.T) {

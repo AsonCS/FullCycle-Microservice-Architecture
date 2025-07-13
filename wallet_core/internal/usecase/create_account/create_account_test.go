@@ -39,14 +39,14 @@ func (m *AccountGatewayMock) Save(account *entity.Account) error {
 func TestCreateAccountUseCase_Execute(t *testing.T) {
 	client, _ := entity.NewClient("John Doe", "j@j.com")
 	clientMock := &ClientGatewayMock{}
-	clientMock.On("Get", client.ID).Return(client, nil)
+	clientMock.On("Get", client.Id).Return(client, nil)
 
 	accountMock := &AccountGatewayMock{}
 	accountMock.On("Save", mock.Anything).Return(nil)
 
 	uc := NewCreateAccountUseCase(accountMock, clientMock)
 	inputDto := CreateAccountInputDto{
-		ClientId: client.ID,
+		ClientId: client.Id,
 	}
 	output, err := uc.Execute(inputDto)
 	assert.Nil(t, err)

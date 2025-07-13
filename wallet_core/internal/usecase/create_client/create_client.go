@@ -40,7 +40,7 @@ func (uc *CreateClientUseCase) Execute(input CreateClientInputDto) (*CreateClien
 		return nil, err
 	}
 	output := &CreateClientOutputDto{
-		ID:        client.ID,
+		ID:        client.Id,
 		Name:      client.Name,
 		Email:     client.Email,
 		CreatedAt: client.CreatedAt,
