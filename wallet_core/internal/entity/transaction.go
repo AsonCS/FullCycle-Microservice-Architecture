@@ -8,7 +8,7 @@ import (
 )
 
 type Transaction struct {
-	ID          string
+	Id          string
 	AccountFrom *Account
 	AccountTo   *Account
 	Amount      float64
@@ -17,7 +17,7 @@ type Transaction struct {
 
 func NewTransaction(accountFrom *Account, accountTo *Account, amount float64) (*Transaction, error) {
 	transaction := &Transaction{
-		ID:          uuid.New().String(),
+		Id:          uuid.New().String(),
 		AccountFrom: accountFrom,
 		AccountTo:   accountTo,
 		Amount:      amount,

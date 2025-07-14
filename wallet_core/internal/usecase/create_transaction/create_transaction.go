@@ -1,8 +1,9 @@
-package createtransaction
+package create_transaction
 
 import (
 	"github.com/AsonCS/FullCycle-Microservice-Architecture/internal/entity"
 	"github.com/AsonCS/FullCycle-Microservice-Architecture/internal/gateway"
+	"github.com/AsonCS/FullCycle-Microservice-Architecture/pkg/events"
 )
 
 type CreateTransactionInputDto struct {
@@ -16,17 +17,23 @@ type CreateTransactionOutputDto struct {
 }
 
 type CreateTransactionUseCase struct {
-	TransactionGateway gateway.TransactionGateway
 	AccountGateway     gateway.AccountGateway
+	EventDispatcher    events.EventDispatcherInterface
+	TransactionCreated events.EventInterface
+	TransactionGateway gateway.TransactionGateway
 }
 
 func NewCreateTransactionUseCase(
-	transactionGateway gateway.TransactionGateway,
 	accountGateway gateway.AccountGateway,
+	eventDispatcher events.EventDispatcherInterface,
+	transactionCreated events.EventInterface,
+	transactionGateway gateway.TransactionGateway,
 ) *CreateTransactionUseCase {
 	return &CreateTransactionUseCase{
-		TransactionGateway: transactionGateway,
 		AccountGateway:     accountGateway,
+		EventDispatcher:    eventDispatcher,
+		TransactionCreated: transactionCreated,
+		TransactionGateway: transactionGateway,
 	}
 }
 
@@ -51,7 +58,15 @@ func (uc *CreateTransactionUseCase) Execute(input CreateTransactionInputDto) (*C
 		return nil, err
 	}
 
-	return &CreateTransactionOutputDto{
-		TransactionId: transaction.ID,
-	}, nil
+	output := &CreateTransactionOutputDto{
+		TransactionId: transaction.Id,
+	}
+
+	uc.TransactionCreated.SetPayload(output)
+	err = uc.EventDispatcher.Dispatch(uc.TransactionCreated)
+	if err != nil {
+		return nil, err
+	}
+
+	return output, nil
 }

@@ -1,8 +1,11 @@
 {
     "cSpell.words": [
+        "ckafka",
+        "confluentinc",
         "createaccount",
         "createclient",
         "createtransaction",
+        "mattn",
         "stretchr",
         "varchar"
     ]

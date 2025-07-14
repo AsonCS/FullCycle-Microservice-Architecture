@@ -1,9 +1,11 @@
-package createtransaction
+package create_transaction
 
 import (
 	"testing"
 
 	"github.com/AsonCS/FullCycle-Microservice-Architecture/internal/entity"
+	"github.com/AsonCS/FullCycle-Microservice-Architecture/internal/event"
+	"github.com/AsonCS/FullCycle-Microservice-Architecture/pkg/events"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -52,7 +54,15 @@ func TestCreateTransactionUseCase_Execute(t *testing.T) {
 		Amount:        100,
 	}
 
-	uc := NewCreateTransactionUseCase(transactionGatewayMock, accountGatewayMock)
+	dispatcher := events.NewEventDispatcher()
+	transactionCreated := event.NewTransactionCreated()
+
+	uc := NewCreateTransactionUseCase(
+		accountGatewayMock,
+		dispatcher,
+		transactionCreated,
+		transactionGatewayMock,
+	)
 	output, err := uc.Execute(inputDto)
 
 	assert.Nil(t, err)
