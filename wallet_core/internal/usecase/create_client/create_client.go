@@ -8,16 +8,16 @@ import (
 )
 
 type CreateClientInputDto struct {
-	Name  string
-	Email string
+	Name  string `json:"name"`
+	Email string `json:"email"`
 }
 
 type CreateClientOutputDto struct {
-	ID        string
-	Name      string
-	Email     string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type CreateClientUseCase struct {

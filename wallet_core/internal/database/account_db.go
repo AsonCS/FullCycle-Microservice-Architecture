@@ -88,5 +88,22 @@ func (a *AccountDb) Get(id string) (*entity.Account, error) {
 		return nil, err
 	}
 	return account, nil
+}
 
+func (a *AccountDb) UpdateBalance(account *entity.Account) error {
+	stmt, err := a.Db.Prepare(
+		"UPDATE accounts SET balance = ? WHERE id = ?",
+	)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(
+		account.Balance,
+		account.Id,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
 }

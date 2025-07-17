@@ -10,7 +10,7 @@ services:
             - 8080:8080
 
     mysql:
-        image: mysql:5.7
+        image: mysql:8.0.42-oraclelinux9
         platform: linux/amd64
         environment:
             MYSQL_ROOT_PASSWORD: root
