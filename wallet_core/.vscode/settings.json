@@ -6,7 +6,9 @@
         "createclient",
         "createtransaction",
         "mattn",
+        "proot",
         "stretchr",
-        "varchar"
+        "varchar",
+        "walletcore"
     ]
 }

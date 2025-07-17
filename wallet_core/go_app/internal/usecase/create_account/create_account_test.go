@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/AsonCS/FullCycle-Microservice-Architecture/internal/entity"
+	"github.com/AsonCS/FullCycle-Microservice-Architecture/internal/usecase/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -38,10 +39,10 @@ func (m *AccountGatewayMock) Save(account *entity.Account) error {
 
 func TestCreateAccountUseCase_Execute(t *testing.T) {
 	client, _ := entity.NewClient("John Doe", "j@j.com")
-	clientMock := &ClientGatewayMock{}
+	clientMock := &mocks.ClientGatewayMock{}
 	clientMock.On("Get", client.Id).Return(client, nil)
 
-	accountMock := &AccountGatewayMock{}
+	accountMock := &mocks.AccountGatewayMock{}
 	accountMock.On("Save", mock.Anything).Return(nil)
 
 	uc := NewCreateAccountUseCase(accountMock, clientMock)

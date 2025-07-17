@@ -1,2 +1,3 @@
-package org.example.message 
+package org.example.message
 
+sealed class Message

@@ -1,4 +1,4 @@
-package org.example
+package org.example.kafka
 
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -8,6 +8,8 @@ import org.apache.log4j.Level
 import org.apache.log4j.LogManager
 import org.apache.log4j.Logger
 import org.apache.log4j.varia.NullAppender
+import org.example.extensions.toMessage
+import org.example.message.Message
 import java.time.Duration.ofMillis
 
 private val consumerProps = mapOf(
@@ -20,7 +22,7 @@ private val consumerProps = mapOf(
 )
 
 suspend fun startKafka(
-    onMessage: (String) -> Unit
+    onMessage: (Message) -> Unit
 ) = withContext(IO) {
     BasicConfigurator.configure()
     LogManager.getRootLogger().level = Level.OFF
@@ -42,11 +44,16 @@ suspend fun startKafka(
             consumer
                 .poll(ofMillis(400))
                 .forEach { record ->
-                    onMessage(
-                        String(
-                            record.value()
+                    try {
+                        onMessage(
+                            String(
+                                record.value()
+                            ).toMessage()
                         )
-                    )
+                    } catch (t: Throwable) {
+                        println("Kafka.error: ${t.message}")
+                        t.printStackTrace()
+                    }
                 }
         }
     }

@@ -1,16 +1,21 @@
 version: '3'
 
 services:
-    goapp:
-        build: .
+    go_app:
+        build: ./go_app
         platform: linux/amd64
         volumes:
-            - .:/app
+            - ./go_app:/app
         ports:
             - 8080:8080
+        depends_on:
+            mysql:
+                condition: service_started
+            kafka:
+                condition: service_started
 
     mysql:
-        image: mysql:8.0.42-oraclelinux9
+        image: mysql:5.7
         platform: linux/amd64
         environment:
             MYSQL_ROOT_PASSWORD: root
