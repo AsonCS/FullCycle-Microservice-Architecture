@@ -5,7 +5,8 @@ import org.jetbrains.exposed.sql.Database
 import java.sql.Connection
 import java.sql.DriverManager
 
-private val driver = "com.mysql.cj.jdbc.Driver"
+private const val driver = "com.mysql.cj.jdbc.Driver"
+//private const val driver = "com.mysql.jdbc.Driver"
 private val Application.password
     get() = environment.config
         .property("mysql.password")
@@ -27,7 +28,7 @@ fun Application.getConnection(): Connection {
 fun Application.getDatabase(): Database {
     Class.forName(driver)
     return Database.connect(
-        driver = driver,
+        //driver = driver,
         password = password,
         url = url,
         user = user,

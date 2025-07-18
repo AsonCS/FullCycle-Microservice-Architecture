@@ -3,6 +3,10 @@ package br.com.wallet.gateway
 import br.com.wallet.entity.Account
 
 interface AccountGateway {
+    suspend fun delete(
+        accountId: String
+    )
+
     suspend fun findAll(): List<Account>
 
     suspend fun findById(

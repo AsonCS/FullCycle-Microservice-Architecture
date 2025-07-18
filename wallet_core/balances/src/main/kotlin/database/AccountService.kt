@@ -27,6 +27,13 @@ class AccountService(
         }
     }
 
+    override suspend fun delete(
+        accountId: String
+    ) {
+        Accounts
+            .deleteWhere { Accounts.id eq accountId }
+    }
+
     override suspend fun findAll(): List<Account> = dbQuery {
         Accounts.selectAll()
             .map {

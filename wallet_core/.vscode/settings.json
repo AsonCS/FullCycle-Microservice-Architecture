@@ -6,6 +6,7 @@
         "createclient",
         "createtransaction",
         "initdb",
+        "kotlin",
         "mattn",
         "proot",
         "stretchr",

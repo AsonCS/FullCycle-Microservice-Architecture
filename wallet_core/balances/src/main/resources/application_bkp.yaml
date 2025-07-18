@@ -1,0 +1,10 @@
+ktor:
+  application:
+    modules:
+      - br.com.wallet.MainKt.module
+  deployment:
+    port: 3003
+mysql:
+  url: "jdbc:mysql://mysql/balances"
+  user: "root"
+  password: "root"

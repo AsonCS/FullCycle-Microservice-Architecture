@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+    kotlin_balances:
+        build: ./balances
+        platform: linux/amd64
+        ports:
+            - 3003:3003
+        depends_on:
+            mysql:
+                condition: service_started
+            kafka:
+                condition: service_started
+
     go_app:
         build: ./go_app
         platform: linux/amd64

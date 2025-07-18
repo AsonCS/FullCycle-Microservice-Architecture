@@ -1,6 +1,210 @@
-<html>
-    <head></head>
-    <body>
-        <h1>Hello world!</h1>
-    </body>
+<html lang="en">
+<head>
+    <title>A Simple SPA For Balances</title>
+    <script type="application/javascript">
+        function displayAllBalances() {
+            clearTasksTable();
+            fetchAllBalances().then(displayBalances)
+        }
+
+        function displayTasksWithPriority() {
+            clearTasksTable();
+            const priority = readTaskPriority();
+            fetchTasksWithPriority(priority).then(displayBalances)
+        }
+
+        function displayTask(name) {
+            fetchTaskWithName(name).then(t =>
+                taskDisplay().innerHTML
+                    = `${t.priority} priority task ${t.name} with description "${t.description}"`
+            )
+        }
+
+        function deleteBalance(id) {
+            deleteBalanceWithId(id).then(() => {
+                clearTaskDisplay();
+                displayAllBalances();
+            })
+        }
+
+        function deleteBalanceWithId(id) {
+            return sendDELETE(`/balances/${id}`)
+        }
+
+        function addNewBalance() {
+            const balance = buildBalanceFromForm();
+            sendPOST("/balances", balance).then(displayAllBalances);
+        }
+
+        function buildBalanceFromForm() {
+            return {
+                balance: getBalanceFormValue("newBalanceBalance"),
+                id: getBalanceFormValue("newBalanceId"),
+                // priority: getBalanceFormValue("newTaskPriority")
+            }
+        }
+
+        function getBalanceFormValue(controlName) {
+            return document.addBalanceForm[controlName].value;
+        }
+
+        function taskDisplay() {
+            return document.getElementById("currentTaskDisplay");
+        }
+
+        function readTaskPriority() {
+            return document.priorityForm.priority.value
+        }
+
+        function fetchTasksWithPriority(priority) {
+            return sendGET(`/tasks/byPriority/${priority}`);
+        }
+
+        function fetchTaskWithName(name) {
+            return sendGET(`/tasks/byName/${name}`);
+        }
+
+        function fetchAllBalances() {
+            return sendGET("/balances")
+        }
+
+        function sendGET(url) {
+            return fetch(
+                url,
+                {headers: {'Accept': 'application/json'}}
+            ).then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                return [];
+            });
+        }
+
+        function sendPOST(url, data) {
+            return fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+        }
+
+        function sendDELETE(url) {
+            return fetch(url, {
+                method: "DELETE"
+            });
+        }
+
+        function balancesTable() {
+            return document.getElementById("balancesTableBody");
+        }
+
+        function clearTasksTable() {
+            balancesTable().innerHTML = "";
+        }
+
+        function clearTaskDisplay() {
+            taskDisplay().innerText = "None";
+        }
+
+        function displayBalances(balances) {
+            const balancesTableBody = balancesTable()
+            balances.forEach(balance => {
+                const newRow = balanceRow(balance);
+                balancesTableBody.appendChild(newRow);
+            });
+        }
+
+        function balanceRow(balance) {
+            return tr([
+                td(balance.balance),
+                td(balance.id),
+                //td(viewLink(balance.id)),
+                td(deleteLink(balance.id)),
+            ]);
+        }
+
+        function tr(children) {
+            const node = document.createElement("tr");
+            children.forEach(child => node.appendChild(child));
+            return node;
+        }
+
+        function td(content) {
+            const node = document.createElement("td");
+            if (content instanceof Element) {
+                node.appendChild(content)
+            } else {
+                node.appendChild(document.createTextNode(content));
+            }
+            return node;
+        }
+
+        function viewLink(taskName) {
+            const node = document.createElement("a");
+            node.setAttribute(
+                "href", `javascript:displayTask("${taskName}")`
+            )
+            node.appendChild(document.createTextNode("view"));
+            return node;
+        }
+
+        function deleteLink(taskName) {
+            const node = document.createElement("a");
+            node.setAttribute(
+                "href", `javascript:deleteBalance("${taskName}")`
+            )
+            node.appendChild(document.createTextNode("delete"));
+            return node;
+        }
+    </script>
+</head>
+<body onload="displayAllBalances()">
+    <h1>Balances Manager</h1>
+    <form action="javascript:displayAllBalances()">
+        <span>View all the balances</span>
+        <input type="submit" value="Go">
+    </form>
+    <form name="priorityForm" action="javascript:displayTasksWithPriority()" style="display: none;">
+        <span>View tasks with priority</span>
+        <select name="priority">
+            <option name="Low">Low</option>
+            <option name="Medium">Medium</option>
+            <option name="High">High</option>
+            <option name="Vital">Vital</option>
+        </select>
+        <input type="submit" value="Go">
+    </form>
+    <form name="addBalanceForm" action="javascript:addNewBalance()">
+        <span>Create new balance with</span>
+        <label for="newBalanceBalance">Balance</label>
+        <input type="number" id="newBalanceBalance" name="newBalanceBalance" min="0" step="0.01" required>
+        <label for="newBalanceId">Id</label>
+        <input type="text" id="newBalanceId" name="newBalanceId" placeholder="Empty for auto generated" size="40">
+        <label for="newTaskPriority" style="display: none;">priority</label>
+        <select id="newTaskPriority" name="newTaskPriority" style="display: none;">
+            <option name="Low">Low</option>
+            <option name="Medium">Medium</option>
+            <option name="High">High</option>
+            <option name="Vital">Vital</option>
+        </select>
+        <input type="submit" value="Go">
+    </form>
+    <hr style="display: none;">
+    <div style="display: none;">
+        Current task is <em id="currentTaskDisplay">None</em>
+    </div>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>Balance</th>
+                <th>Id</th>
+                <th style="display: none;"></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="balancesTableBody">
+        </tbody>
+    </table>
+</body>
 </html>
