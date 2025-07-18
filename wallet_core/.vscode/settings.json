@@ -5,6 +5,7 @@
         "createaccount",
         "createclient",
         "createtransaction",
+        "initdb",
         "mattn",
         "proot",
         "stretchr",
