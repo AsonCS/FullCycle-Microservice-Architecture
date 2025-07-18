@@ -82,11 +82,16 @@ fun Application.module() {
     }
 
     startKafka { message ->
-        gateway.upsert(
-            message.originAccount,
-            message.destinationAccount
-        )
-        println(message)
+        try {
+            gateway.upsert(
+                message.originAccount,
+                message.destinationAccount
+            )
+        } catch (t: Throwable) {
+            println("Error upsertting messages: $message")
+            t.printStackTrace()
+        }
+        // println(message)
     }
 
     configureBalances(

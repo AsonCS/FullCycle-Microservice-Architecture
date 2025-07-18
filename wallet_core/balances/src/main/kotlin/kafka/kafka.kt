@@ -14,7 +14,7 @@ import org.apache.log4j.varia.NullAppender
 import java.time.Duration.ofMillis
 
 private val consumerProps = mapOf(
-    "bootstrap.servers" to "localhost:9092",
+    "bootstrap.servers" to "kafka:29092",
     "auto.offset.reset" to "earliest",
     "key.deserializer" to "org.apache.kafka.common.serialization.StringDeserializer",
     "value.deserializer" to "org.apache.kafka.common.serialization.ByteArrayDeserializer",
@@ -46,8 +46,12 @@ fun startKafka(
                 consumer
                     .poll(ofMillis(400))
                     .forEach { record ->
+                        val value = String(record.value())
+                        println("Kafka: $value")
+                        if (value.contains("BalanceUpdated").not())
+                            return@forEach
+
                         try {
-                            val value = String(record.value())
                             val payload = json
                                 .decodeFromString<BalanceUpdated>(
                                     value

@@ -31,6 +31,6 @@ fun Application.getDatabase(): Database {
         //driver = driver,
         password = password,
         url = url,
-        user = user,
+        user = user
     )
 }

@@ -16,17 +16,17 @@ type CreateTransactionInputDto struct {
 }
 
 type CreateTransactionOutputDto struct {
-	OriginAccountId  string  `json:"origin_account_id"`
-	DestineAccountId string  `json:"destine_account_id"`
-	Amount           float64 `json:"amount"`
-	TransactionId    string  `json:"transaction_id"`
+	OriginAccountId      string  `json:"origin_account_id"`
+	DestinationAccountId string  `json:"destination_account_id"`
+	Amount               float64 `json:"amount"`
+	TransactionId        string  `json:"transaction_id"`
 }
 
 type BalanceUpdatedOutputDto struct {
-	OriginAccountBalance  float64 `json:"origin_account_balance"`
-	OriginAccountId       string  `json:"origin_account_id"`
-	DestineAccountBalance float64 `json:"destine_account_balance"`
-	DestineAccountId      string  `json:"destine_account_id"`
+	OriginAccountBalance      float64 `json:"origin_account_balance"`
+	OriginAccountId           string  `json:"origin_account_id"`
+	DestinationAccountBalance float64 `json:"destination_account_balance"`
+	DestinationAccountId      string  `json:"destination_account_id"`
 }
 
 type CreateTransactionUseCase struct {
@@ -92,14 +92,14 @@ func (uc *CreateTransactionUseCase) Execute(
 			return err
 		}
 		output.OriginAccountId = input.AccountIdFrom
-		output.DestineAccountId = input.AccountIdTo
+		output.DestinationAccountId = input.AccountIdTo
 		output.Amount = input.Amount
 		output.TransactionId = transaction.Id
 
 		balanceUpdatedOutput.OriginAccountId = input.AccountIdFrom
-		balanceUpdatedOutput.DestineAccountId = input.AccountIdTo
+		balanceUpdatedOutput.DestinationAccountId = input.AccountIdTo
 		balanceUpdatedOutput.OriginAccountBalance = accountFrom.Balance
-		balanceUpdatedOutput.DestineAccountBalance = accountTo.Balance
+		balanceUpdatedOutput.DestinationAccountBalance = accountTo.Balance
 		return nil
 	})
 	if err != nil {

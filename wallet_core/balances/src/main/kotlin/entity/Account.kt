@@ -8,5 +8,7 @@ data class Account(
     @SerialName("balance")
     val balance: Float,
     @SerialName("id")
-    val id: String
+    val id: String,
+    @SerialName("updatedAt")
+    val updatedAt: String? = null
 )

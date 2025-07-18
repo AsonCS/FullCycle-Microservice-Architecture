@@ -1,0 +1,28 @@
+###
+GET http://localhost:3003/balances HTTP/1.1
+Content-Type: application/json
+
+###
+GET http://localhost:3003/balances/f70f5ac5-0ce9-47f7-a17b-0a6b862720a9 HTTP/1.1
+Content-Type: application/json
+
+###
+POST http://localhost:3003/balances HTTP/1.1
+Content-Type: application/json
+
+{
+    "balance": "5000.56"
+}
+
+###
+POST http://localhost:3003/balances HTTP/1.1
+Content-Type: application/json
+
+{
+    "balance": "555.56",
+    "id": "192dc216-7d32-46a7-a0e6-d2a8039a7d7d"
+}
+
+###
+DELETE http://localhost:3003/balances/192dc216-7d32-46a7-a0e6-d2a8039a7d7d HTTP/1.1
+Content-Type: application/json

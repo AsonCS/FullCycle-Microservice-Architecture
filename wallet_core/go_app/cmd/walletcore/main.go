@@ -23,6 +23,9 @@ import (
 func main() {
 	// mysql -u root -proot wallet
 	// show databases;
+	// use balances;
+	// desc accounts;
+	// show tables;
 	// select * from clients;select * from accounts;select * from transactions;
 	// delete from clients;delete from accounts;delete from transactions;
 	// update accounts set balance = 1000 where id = '4251701a-d554-4e38-8ed2-66034d152e8a';

@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class BalanceUpdated(
     @SerialName("name")
     val name: String,
-    @SerialName("balance")
+    @SerialName("payload")
     val payload: Payload
 ) {
     @Serializable
